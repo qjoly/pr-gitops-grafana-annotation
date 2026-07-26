@@ -6,6 +6,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/qjoly/pr-gitops-grafana-annotation/internal/config"
@@ -14,9 +15,9 @@ import (
 )
 
 type Server struct {
-	cfg      *config.Config
-	grafana  *grafana.Client
-	logger   *slog.Logger
+	cfg     *config.Config
+	grafana *grafana.Client
+	logger  *slog.Logger
 }
 
 func New(cfg *config.Config, grafanaClient *grafana.Client, logger *slog.Logger) *Server {
@@ -65,7 +66,7 @@ func (s *Server) handleGitHubWebhook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if evt.Repository.FullName != s.cfg.GitHubRepo {
+	if !strings.EqualFold(evt.Repository.FullName, s.cfg.GitHubRepo) {
 		w.WriteHeader(http.StatusOK)
 		return
 	}

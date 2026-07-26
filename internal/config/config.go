@@ -8,19 +8,19 @@ import (
 )
 
 type Config struct {
-	ListenAddr        string
+	ListenAddr          string
 	GitHubWebhookSecret string
-	GitHubRepo        string // "owner/name", e.g. "qjoly/gitops"
-	GrafanaURL        string
-	GrafanaToken      string
-	AnnotationTags    []string
+	GitHubRepo          string // "owner/name", e.g. "qjoly/gitops"
+	GrafanaURL          string
+	GrafanaToken        string
+	AnnotationTags      []string
 }
 
 func Load() (*Config, error) {
 	cfg := &Config{
 		ListenAddr:          getEnv("LISTEN_ADDR", ":8080"),
 		GitHubWebhookSecret: os.Getenv("GITHUB_WEBHOOK_SECRET"),
-		GitHubRepo:          getEnv("GITHUB_REPO", "qjoly/gitops"),
+		GitHubRepo:          getEnv("GITHUB_REPO", "qjoly/GitOps"),
 		GrafanaURL:          strings.TrimRight(os.Getenv("GRAFANA_URL"), "/"),
 		GrafanaToken:        os.Getenv("GRAFANA_TOKEN"),
 		AnnotationTags:      splitAndTrim(getEnv("ANNOTATION_TAGS", "gitops,deploy")),
